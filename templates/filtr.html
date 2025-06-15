@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Obidalarni filtrlash - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="hero-section rounded">
+        <div class="container">
+            <h1 class="display-4">Obidalarni filtrlash</h1>
+            <p class="lead">Ma'lum mezonlar bo'yicha obidalarni filtrlash</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Filtrlash parametrlari</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('filtr') }}" method="get">
+                        <div class="mb-3">
+                            <label for="guruh" class="form-label">Guruh bo'yicha:</label>
+                            <select class="form-select" id="guruh" name="guruh">
+                                <option value="">Barcha guruhlar</option>
+                                <option value="Restavratsiyalangan" {% if tanlangan_guruh == 'Restavratsiyalangan' %}selected{% endif %}>Restavratsiyalangan</option>
+                                <option value="Restavratsiya kutilayotgan" {% if tanlangan_guruh == 'Restavratsiya kutilayotgan' %}selected{% endif %}>Restavratsiya kutilayotgan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="yil" class="form-label">Tiklangan yil bo'yicha:</label>
+                            <select class="form-select" id="yil" name="yil">
+                                <option value="">Barcha yillar</option>
+                                {% for yil_obj in yillar %}
+                                    <option value="{{ yil_obj.tiklangan_yili }}" {% if tanlangan_yil == yil_obj.tiklangan_yili|string %}selected{% endif %}>{{ yil_obj.tiklangan_yili }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="tur" class="form-label">Turi bo'yicha:</label>
+                            <select class="form-select" id="tur" name="tur">
+                                <option value="">Barcha turlar</option>
+                                <option value="Paxsa" {% if tanlangan_tur == 'Paxsa' %}selected{% endif %}>Paxsa</option>
+                                <option value="Gil" {% if tanlangan_tur == 'Gil' %}selected{% endif %}>Gil</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Filtrlash</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <h2 class="mb-3">Filtrlash natijalari</h2>
+            <div class="row">
+                {% if obidalar|length > 0 %}
+                    {% for obida in obidalar %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100">
+                                {% if obida.rasm_url %}
+                                    <img src="{{ obida.rasm_url }}" class="card-img-top" alt="{{ obida.nomi }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <img src="/static/images/no-image.jpg" class="card-img-top" alt="Rasm yo'q" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ obida.nomi }}</h5>
+                                    <p class="card-text">
+                                        <strong>Manzil:</strong> {{ obida.manzili }}<br>
+                                        <strong>Turi:</strong> {{ obida.turi }}<br>
+                                        <strong>Guruh:</strong> {{ obida.guruh }}
+                                        {% if obida.tiklangan_yili %}
+                                            <br><strong>Tiklangan yil:</strong> {{ obida.tiklangan_yili }}
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="card-footer bg-transparent">
+                                    <a href="{{ url_for('obida_view', id=obida.id) }}" class="btn btn-primary w-100">Batafsil</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Tanlangan filtr parametrlari bo'yicha hech qanday obida topilmadi.
+                        </div>
+                        <p>Boshqa parametrlarni tanlash orqali qayta qidirib ko'ring.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}{{ obida.nomi }} - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Bosh sahifa</a></li>
+            {% if obida.turi == 'Paxsa' %}
+                <li class="breadcrumb-item"><a href="{{ url_for('paxsa') }}">Paxsa obidalar</a></li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{{ url_for('gil') }}">Gil obidalar</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active" aria-current="page">{{ obida.nomi }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Obida rasmi -->
+        <div class="col-md-5 mb-4">
+            <div class="card">
+                {% if obida.rasm_url %}
+                    <img src="{{ obida.rasm_url }}" class="card-img-top img-fluid" alt="{{ obida.nomi }}" style="height: 400px; object-fit: cover;">
+                {% else %}
+                    <img src="/static/images/no-image.jpg" class="card-img-top img-fluid" alt="Rasm yo'q" style="height: 400px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ obida.nomi }}</h5>
+                    <p class="card-text">
+                        <span class="badge bg-{{ 'success' if obida.guruh == 'Restavratsiyalangan' else 'warning' }}">
+                            {{ obida.guruh }}
+                        </span>
+                        <span class="badge bg-info">{{ obida.turi }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Obida haqida to'liq ma'lumot -->
+        <div class="col-md-7">
+            <div class="obida-details">
+                <h2 class="mb-4">{{ obida.nomi }}</h2>
+                
+                <div class="mb-3">
+                    <h5 class="info-label">Manzili:</h5>
+                    <p>{{ obida.manzili }}</p>
+                </div>
+                
+                {% if obida.tiklangan_yili %}
+                <div class="mb-3">
+                    <h5 class="info-label">Tiklangan yili:</h5>
+                    <p>{{ obida.tiklangan_yili }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="mb-3">
+                    <h5 class="info-label">Qurilish materiallari:</h5>
+                    <p>{{ obida.qurilish_materiallari }}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h5 class="info-label">Bosh fasadi:</h5>
+                    <p>{{ obida.bosh_fasadi }}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h5 class="info-label">O'lchamlari:</h5>
+                    <p>{{ obida.olchamlari }}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h5 class="info-label">Texnik holati:</h5>
+                    <p>{{ obida.texnik_holati }}</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h5 class="info-label">Tarixiy ma'lumot:</h5>
+                    <p>{{ obida.tarixiy_malumot }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

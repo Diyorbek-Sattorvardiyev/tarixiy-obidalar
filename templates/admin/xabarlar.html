@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Xabarlar - Admin panel - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_panel') }}">Admin panel</a></li>
+            <li class="breadcrumb-item active">Xabarlar</li>
+        </ol>
+    </nav>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Foydalanuvchilar xabarlari</h4>
+            <span class="badge bg-light text-dark">Jami: {{ xabarlar|length }}</span>
+        </div>
+        <div class="card-body">
+            {% if xabarlar|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Sana</th>
+                                <th>Kimdan</th>
+                                <th>Mavzu</th>
+                                <th>Holati</th>
+                                <th>Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for xabar in xabarlar %}
+                                <tr {% if not xabar.oqilgan %}class="table-warning"{% endif %}>
+                                    <td>{{ xabar.id }}</td>
+                                    <td>{{ xabar.yuborilgan_sana }}</td>
+                                    <td>{{ xabar.ism }}</td>
+                                    <td>{{ xabar.mavzu }}</td>
+                                    <td>
+                                        {% if xabar.oqilgan %}
+                                            <span class="badge bg-success">O'qilgan</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Yangi</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{{ url_for('view_xabar', id=xabar.id) }}" class="btn btn-sm btn-info">
+                                                <i class="bi bi-eye"></i> Ko'rish
+                                            </a>
+                                            
+                                            {% if not xabar.oqilgan %}
+                                                <form action="{{ url_for('xabar_oqilgan', id=xabar.id) }}" method="post" class="d-inline">
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="bi bi-check-circle"></i> O'qilgan
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                            
+                                            <button type="button" class="btn btn-sm btn-danger delete-xabar-btn" 
+                                                    data-xabar-id="{{ xabar.id }}" 
+                                                    data-sender-name="{{ xabar.ism }}">
+                                                <i class="bi bi-trash"></i> O'chirish
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Hozircha hech qanday xabarlar yo'q.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

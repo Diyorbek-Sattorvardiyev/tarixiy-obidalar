@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Qidiruv: {{ qidiruv_soz }} - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="hero-section rounded">
+        <div class="container">
+            <h1 class="display-4">Qidiruv natijalari</h1>
+            <p class="lead">"{{ qidiruv_soz }}" so'zi bo'yicha qidiruv natijalari</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="bg-light p-3 rounded shadow-sm mb-4">
+                <form action="{{ url_for('qidiruv') }}" method="get" class="d-flex">
+                    <input type="text" name="q" class="form-control me-2" value="{{ qidiruv_soz }}" placeholder="Qidiruv...">
+                    <button type="submit" class="btn btn-primary">Qidirish</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if obidalar|length > 0 %}
+            {% for obida in obidalar %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {% if obida.rasm_url %}
+                            <img src="{{ obida.rasm_url }}" class="card-img-top" alt="{{ obida.nomi }}" style="height: 200px; object-fit: cover;">
+                        {% else %}
+                            <img src="/static/images/no-image.jpg" class="card-img-top" alt="Rasm yo'q" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ obida.nomi }}</h5>
+                            <p class="card-text">
+                                <strong>Manzil:</strong> {{ obida.manzili }}<br>
+                                <strong>Turi:</strong> {{ obida.turi }}<br>
+                                <strong>Guruh:</strong> {{ obida.guruh }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <a href="{{ url_for('obida_view', id=obida.id) }}" class="btn btn-primary w-100">Batafsil</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>
+                    "{{ qidiruv_soz }}" so'zi bo'yicha hech qanday obida topilmadi.
+                </div>
+                <p>Qidiruv bo'yicha tavsiyalar:</p>
+                <ul>
+                    <li>So'z to'g'ri yozilganligini tekshiring</li>
+                    <li>Qisqaroq so'z bilan qidirib ko'ring</li>
+                    <li>Boshqa so'z yoki manzil bilan qidirib ko'ring</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

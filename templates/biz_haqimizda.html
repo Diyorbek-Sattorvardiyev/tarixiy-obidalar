@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Biz haqimizda - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="hero-section rounded mb-4">
+        <div class="container">
+            <h1 class="display-4">Biz haqimizda</h1>
+            <p class="lead">Tarixiy obidalarni saqlash va restavratsiyalash bo'yicha loyihamiz haqida</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Loyiha haqida</h2>
+                    <p class="card-text">
+                        "Tarixiy obidalar va ularni restavratsiyasi" loyihasi O'zbekiston tarixiy me'moriy yodgorliklarini saqlash, 
+                        ularning hozirgi holati haqida ma'lumot berish va keng jamoatchilikni tarixiy merosimiz bilan tanishtirish 
+                        maqsadida 2023-yilda yaratilgan.
+                    </p>
+                    <p>
+                        Bizning asosiy maqsadlarimiz:
+                    </p>
+                    <ul>
+                        <li>O'zbekiston hududidagi tarixiy obidalarni to'liq ro'yxatga olish</li>
+                        <li>Ularning restavratsiya jarayonlarini kuzatib borish</li>
+                        <li>Tarixiy yodgorliklarni asrab-avaylashga e'tibor qaratish</li>
+                        <li>Tarixiy obidalar bo'yicha ma'lumotlarni bir joyda to'plash</li>
+                        <li>Sayyohlik sohasiga ko'maklashish</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title">Bizning jamoamiz</h2>
+                    <p class="card-text">
+                        Loyiha jamoasi tarixchilar, me'morlar, dasturchilar va o'z ishiga fidoyi bo'lgan 
+                        mutaxassislardan tashkil topgan. Biz doimiy ravishda ma'lumotlarni yangilab, 
+                        to'ldirib boramiz.
+                    </p>
+                    <p>
+                        Biz mahalliy hokimiyat organlari, Madaniy meros agentligi, muzeylar va boshqa 
+                        tashkilotlar bilan hamkorlik qilamiz.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Aloqa ma'lumotlari</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Manzil:</strong> Toshkent sh, Amir Temur ko'chasi, 15</p>
+                    <p><strong>Telefon:</strong> +998 71 123-45-67</p>
+                    <p><strong>Email:</strong> info@tarixiyobidalar.uz</p>
+                    <p><strong>Ish vaqti:</strong> Du-Ju: 9:00 - 18:00</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Biz bilan bog'laning</h5>
+                </div>
+                <div class="card-body">
+                    <p>Tarixiy obidalar haqida savollaringiz yoki takliflaringiz bo'lsa, biz bilan bog'laning.</p>
+                    <a href="{{ url_for('aloqa') }}" class="btn btn-success w-100">Xabar yuborish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

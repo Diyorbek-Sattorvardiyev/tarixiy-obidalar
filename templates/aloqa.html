@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Aloqa - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="hero-section rounded mb-4">
+        <div class="container">
+            <h1 class="display-4">Biz bilan bog'laning</h1>
+            <p class="lead">Savollar, takliflar yoki ma'lumotlar bo'yicha biz bilan bog'lanishingiz mumkin</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Xabar yuborish</h4>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('aloqa') }}" method="post">
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="ism" class="form-label">Ism-familiya:</label>
+                                <input type="text" class="form-control" id="ism" name="ism" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="telefon" class="form-label">Telefon:</label>
+                            <input type="tel" class="form-control" id="telefon" name="telefon">
+                            <small class="text-muted">Ixtiyoriy</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="mavzu" class="form-label">Mavzu:</label>
+                            <select class="form-select" id="mavzu" name="mavzu" required>
+                                <option value="">Mavzuni tanlang</option>
+                                <option value="Savollar">Savollar</option>
+                                <option value="Takliflar">Takliflar</option>
+                                <option value="Xatolik haqida xabar">Xatolik haqida xabar</option>
+                                <option value="Yangi ma'lumot qo'shish">Yangi ma'lumot qo'shish</option>
+                                <option value="Boshqa">Boshqa</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="xabar" class="form-label">Xabar matni:</label>
+                            <textarea class="form-control" id="xabar" name="xabar" rows="5" required></textarea>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Xabarni yuborish</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Aloqa ma'lumotlari</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Manzil:</strong> Toshkent sh, Amir Temur ko'chasi, 15</p>
+                    <p><strong>Telefon:</strong> +998 71 123-45-67</p>
+                    <p><strong>Email:</strong> info@tarixiyobidalar.uz</p>
+                    <p><strong>Ish vaqti:</strong> Du-Ju: 9:00 - 18:00</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Biz haqimizda</h5>
+                </div>
+                <div class="card-body">
+                    <p>Loyihamiz haqida to'liqroq ma'lumot olishni istasangiz, "Biz haqimizda" sahifasiga o'ting.</p>
+                    <a href="{{ url_for('biz_haqimizda') }}" class="btn btn-success w-100">Batafsil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Xabar - Admin panel - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_panel') }}">Admin panel</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_xabarlar') }}">Xabarlar</a></li>
+            <li class="breadcrumb-item active">Xabar #{{ xabar.id }}</li>
+        </ol>
+    </nav>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Xabar #{{ xabar.id }}</h4>
+            <span class="badge {% if xabar.oqilgan %}bg-success{% else %}bg-warning{% endif %}">
+                {% if xabar.oqilgan %}O'qilgan{% else %}Yangi{% endif %}
+            </span>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Yuboruvchi ma'lumotlari:</h5>
+                    <p>
+                        <strong>Ism:</strong> {{ xabar.ism }}<br>
+                        <strong>Email:</strong> <a href="mailto:{{ xabar.email }}">{{ xabar.email }}</a><br>
+                        {% if xabar.telefon %}
+                            <strong>Telefon:</strong> <a href="tel:{{ xabar.telefon }}">{{ xabar.telefon }}</a><br>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Xabar ma'lumotlari:</h5>
+                    <p>
+                        <strong>Mavzu:</strong> {{ xabar.mavzu }}<br>
+                        <strong>Sana:</strong> {{ xabar.yuborilgan_sana }}<br>
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Xabar matni</h5>
+                </div>
+                <div class="card-body">
+                    <p>{{ xabar.xabar|replace('\n', '<br>')|safe }}</p>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{{ url_for('admin_xabarlar') }}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Orqaga
+                </a>
+                
+                <div>
+                    {% if not xabar.oqilgan %}
+                        <form action="{{ url_for('xabar_oqilgan', id=xabar.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> O'qilgan deb belgilash
+                            </button>
+                        </form>
+                    {% endif %}
+                    
+                    <button type="button" class="btn btn-danger delete-xabar-btn" 
+                            data-xabar-id="{{ xabar.id }}" 
+                            data-sender-name="{{ xabar.ism }}">
+                        <i class="bi bi-trash"></i> O'chirish
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

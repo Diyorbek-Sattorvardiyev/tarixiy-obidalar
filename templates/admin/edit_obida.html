@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}{{ obida.nomi }} - Tahrirlash - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('admin_panel') }}">Admin panel</a></li>
+            <li class="breadcrumb-item active">{{ obida.nomi }} - Tahrirlash</li>
+        </ol>
+    </nav>
+    
+    <div class="card shadow">
+        <div class="card-header bg-warning">
+            <h4 class="mb-0">Obidani tahrirlash: {{ obida.nomi }}</h4>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('edit_obida', id=obida.id) }}" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nomi" class="form-label">Obida nomi:</label>
+                        <input type="text" class="form-control" id="nomi" name="nomi" value="{{ obida.nomi }}" required>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="tiklangan_yili" class="form-label">Tiklangan yili (asr):</label>
+                        <input type="text" class="form-control" id="tiklangan_yili" name="tiklangan_yili" value="{{ obida.tiklangan_yili or '' }}" placeholder="Masalan: XV asr yoki XI-XIV asr">
+                        <small class="text-muted">Asr ko'rinishida kiriting (masalan: XV asr)</small>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="manzili" class="form-label">Manzili:</label>
+                        <input type="text" class="form-control" id="manzili" name="manzili" value="{{ obida.manzili }}" required>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="olchamlari" class="form-label">O'lchamlari:</label>
+                        <input type="text" class="form-control" id="olchamlari" name="olchamlari" value="{{ obida.olchamlari }}" required>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="guruh" class="form-label">Guruh:</label>
+                        <select class="form-select" id="guruh" name="guruh" required>
+                            <option value="Restavratsiyalangan" {% if obida.guruh == 'Restavratsiyalangan' %}selected{% endif %}>Restavratsiyalangan</option>
+                            <option value="Restavratsiya kutilayotgan" {% if obida.guruh == 'Restavratsiya kutilayotgan' %}selected{% endif %}>Restavratsiya kutilayotgan</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="turi" class="form-label">Turi:</label>
+                        <select class="form-select" id="turi" name="turi" required>
+                            <option value="Paxsa" {% if obida.turi == 'Paxsa' %}selected{% endif %}>Paxsa</option>
+                            <option value="Gil" {% if obida.turi == 'Gil' %}selected{% endif %}>Gil</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="qurilish_materiallari" class="form-label">Qurilish materiallari:</label>
+                        <textarea class="form-control" id="qurilish_materiallari" name="qurilish_materiallari" rows="3" required>{{ obida.qurilish_materiallari }}</textarea>
+                    </div>
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="bosh_fasadi" class="form-label">Bosh fasadi tavsifi:</label>
+                        <textarea class="form-control" id="bosh_fasadi" name="bosh_fasadi" rows="3" required>{{ obida.bosh_fasadi }}</textarea>
+                    </div>
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="tarixiy_malumot" class="form-label">Tarixiy ma'lumot:</label>
+                        <textarea class="form-control" id="tarixiy_malumot" name="tarixiy_malumot" rows="5" required>{{ obida.tarixiy_malumot }}</textarea>
+                    </div>
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="texnik_holati" class="form-label">Texnik holati:</label>
+                        <textarea class="form-control" id="texnik_holati" name="texnik_holati" rows="3" required>{{ obida.texnik_holati }}</textarea>
+                    </div>
+                    
+                    <div class="col-md-12 mb-3">
+                        <label for="rasm" class="form-label">Obida rasmi:</label>
+                        {% if obida.rasm_url %}
+                            <div class="mb-2">
+                                <img src="{{ obida.rasm_url }}" alt="{{ obida.nomi }}" class="img-thumbnail" style="max-height: 150px;">
+                                <p class="small text-muted">Joriy rasm</p>
+                            </div>
+                        {% endif %}
+                        <input type="file" class="form-control" id="rasm" name="rasm" accept="image/*">
+                        <small class="text-muted">Faqat yangi rasm tanlanganda o'zgaradi.</small>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-end">
+                    <a href="{{ url_for('admin_panel') }}" class="btn btn-secondary">Bekor qilish</a>
+                    <button type="submit" class="btn btn-warning">Obidani saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

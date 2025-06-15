@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tur }} obidalar - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="hero-section rounded">
+        <div class="container">
+            <h1 class="display-4">{{ tur }} obidalar</h1>
+            <p class="lead">O'zbekistondagi {{ tur | lower }} materiallaridan qurilgan tarixiy obidalar</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="bg-light p-4 rounded shadow-sm mb-4">
+                <h2>{{ tur }} obidalar haqida</h2>
+                {% if tur == 'Paxsa' %}
+                    <p>
+                        Paxsa - bu tuproq, gil va boshqa qo'shimchalardan tayyorlanadigan qurilish materiali. Paxsa devorlar 
+                        O'zbekistondagi qadimiy me'morchilikda keng qo'llanilgan va ular yaxshi issiqlik saqlash xususiyatiga 
+                        ega bo'lib, yerli iqlimga juda mos keladi. Bu turdagi obidalar asosan qal'alar, devorlar va ba'zi masjidlarda uchraydi.
+                    </p>
+                {% else %}
+                    <p>
+                        Gil (loydan pishirilgan g'isht) obidalar O'zbekiston me'morchiligida keng tarqalgan. Bu material nafis 
+                        bezaklar va naqshlar yaratishga imkon beradi, shuning uchun madrasa, masjid va maqbaralar qurilishida 
+                        ko'p ishlatilgan. Gil g'ishtlar tufayli murakkab me'moriy elementlar va koshinkori bezaklar yaratish imkoni bo'lgan.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Filtrlash</h5>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('filtr') }}" method="get">
+                        <input type="hidden" name="tur" value="{{ tur }}">
+                        <div class="mb-3">
+                            <label for="guruh" class="form-label">Obida guruhi:</label>
+                            <select class="form-select" name="guruh" id="guruh">
+                                <option value="">Barchasi</option>
+                                <option value="Restavratsiyalangan">Restavratsiyalangan</option>
+                                <option value="Restavratsiya kutilayotgan">Restavratsiya kutilayotgan</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filtrlash</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mb-3">{{ tur }} obidalar ro'yxati</h2>
+    <div class="row">
+        {% for obida in obidalar %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if obida.rasm_url %}
+                        <img src="{{ obida.rasm_url }}" class="card-img-top" alt="{{ obida.nomi }}" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <img src="/static/images/no-image.jpg" class="card-img-top" alt="Rasm yo'q" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ obida.nomi }}</h5>
+                        <p class="card-text">
+                            <strong>Manzil:</strong> {{ obida.manzili }}<br>
+                            <strong>Guruh:</strong> {{ obida.guruh }}<br>
+                            {% if obida.tiklangan_yili %}
+                                <strong>Tiklangan yil:</strong> {{ obida.tiklangan_yili }}
+                            {% else %}
+                                <strong>Holati:</strong> {{ obida.texnik_holati }}
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a href="{{ url_for('obida_view', id=obida.id) }}" class="btn btn-primary w-100">Batafsil</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    Hozircha {{ tur | lower }} obidalar ro'yxatga olinmagan.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

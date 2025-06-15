@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Tarixiy Obidalar{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .card {
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .carousel-item img {
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .hero-section{
+            background-color: #0D6EFD !important;
+            text-align: center;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon{
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .carousel-caption {
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Yozuv orqasiga qora fon, yarim shaffof */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .carousel-caption h2,
+        .carousel-caption p {
+            color: #fff;
+            /* Oq rangdagi matn */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            /* Soya qo‘shish – tiniqlik uchun */
+        }
+
+        .hero-section {
+            background-color: #17a2b8;
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .obida-details {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .carousel-item img {
+                height: 300px;
+            }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">Tarixiy Obidalar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Bosh sahifa</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Obidalar turlari
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('paxsa') }}">Paxsa</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('gil') }}">Gil</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('filtr') }}">Filtrlash</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('biz_haqimizda') }}">Biz haqimizda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('aloqa') }}">Aloqa</a>
+                    </li>
+                </ul>
+
+                <!-- Qidiruv formi -->
+                <form class="d-flex me-2" action="{{ url_for('qidiruv') }}" method="get">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Qidiruv..."
+                        aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">Qidirish</button>
+                </form>
+
+                <!-- Login tugmasi -->
+                <div class="navbar-nav">
+                    {% if session.get('user_id') %}
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            {{ session.get('username') }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ url_for('admin_panel') }}">Admin panel</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('admin_xabarlar') }}">
+                                    Xabarlar
+                                    {% if session.get('yangi_xabarlar', 0) > 0 %}
+                                    <span class="badge bg-danger">{{ session.get('yangi_xabarlar') }}</span>
+                                    {% endif %}
+                                </a></li>
+                            {% if session.get('is_superadmin') %}
+                            <li><a class="dropdown-item" href="{{ url_for('superadmin_panel') }}">Super Admin</a></li>
+                            {% endif %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url_for('logout') }}">Chiqish</a></li>
+                        </ul>
+                    </div>
+                    {% else %}
+                    <a class="btn btn-primary" href="{{ url_for('login') }}">Kirish</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash xabarlar -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Asosiy kontent -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Tarixiy Obidalar</h5>
+                    <p>O'zbekiston tarixiy me'moriy yodgorliklari haqida ma'lumot beruvchi platforma</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Foydali havolalar</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('index') }}" class="text-white">Bosh sahifa</a></li>
+                        <li><a href="{{ url_for('paxsa') }}" class="text-white">Paxsa obidalar</a></li>
+                        <li><a href="{{ url_for('gil') }}" class="text-white">Gil obidalar</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Bog'lanish</h5>
+                    <address>
+                        <p>Telefon: +998 XX XXX XX XX</p>
+                        <p>Email: info@tarixiyobidalar.uz</p>
+                    </address>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>© 2025 Tarixiy Obidalar. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap va boshqa JS kutubxonalar -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- O'chirish uchun JavaScript funksiyalari -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Admin o'chirish uchun funksiya
+            document.querySelectorAll('.delete-admin-btn').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const adminId = this.getAttribute('data-admin-id');
+                    const adminName = this.getAttribute('data-admin-name');
+
+                    if (confirm(`Siz rostdan ham "${adminName}" nomli adminni o'chirmoqchimisiz?\n\nDiqqat: Bu amalni qaytarib bo'lmaydi!`)) {
+                        // O'chirish formani yaratish va yuborish
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = `/superadmin/admin/delete/${adminId}`;
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            });
+
+            // Xabar o'chirish uchun funksiya
+            document.querySelectorAll('.delete-xabar-btn').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const xabarId = this.getAttribute('data-xabar-id');
+                    const senderName = this.getAttribute('data-sender-name');
+
+                    if (confirm(`${senderName} dan kelgan xabarni o'chirmoqchimisiz?\n\nDiqqat: Bu amalni qaytarib bo'lmaydi!`)) {
+                        // O'chirish formani yaratish va yuborish
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = `/admin/xabar/${xabarId}/delete`;
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            });
+
+            // Obida o'chirish uchun funksiya
+            document.querySelectorAll('.delete-obida-btn').forEach(function (button) {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const obidaId = this.getAttribute('data-obida-id');
+                    const obidaNomi = this.getAttribute('data-obida-nomi');
+
+                    if (confirm(`"${obidaNomi}" nomli obidani o'chirmoqchimisiz?\n\nDiqqat: Bu amalni qaytarib bo'lmaydi!`)) {
+                        // O'chirish formani yaratish va yuborish
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = `/admin/obida/delete/${obidaId}`;
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

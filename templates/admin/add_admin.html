@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Yangi admin qo'shish - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('superadmin_panel') }}">Super Admin</a></li>
+            <li class="breadcrumb-item active">Yangi admin qo'shish</li>
+        </ol>
+    </nav>
+    
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Yangi admin qo'shish</h4>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('add_admin') }}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Login:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label">Parol:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="is_superadmin" name="is_superadmin">
+                    <label class="form-check-label" for="is_superadmin">Super Admin huquqlarini berish</label>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-end">
+                    <a href="{{ url_for('superadmin_panel') }}" class="btn btn-secondary">Bekor qilish</a>
+                    <button type="submit" class="btn btn-success">Adminni qo'shish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Super Admin - Tarixiy Obidalar{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Super Admin boshqaruv paneli</h1>
+        <a href="{{ url_for('add_admin') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Yangi admin qo'shish
+        </a>
+    </div>
+    
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Adminlar ro'yxati</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Login</th>
+                            <th>Huquqi</th>
+                            <th>Yaratilgan sana</th>
+                            <th>Amallar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for admin in admins %}
+                            <tr>
+                                <td>{{ admin.id }}</td>
+                                <td>{{ admin.username }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'danger' if admin.is_superadmin else 'primary' }}">
+                                        {{ 'Super Admin' if admin.is_superadmin else 'Admin' }}
+                                    </span>
+                                </td>
+                                <td>{{ admin.created_at }}</td>
+                                <td>
+                                    {% if not admin.id == session.user_id %}
+                                        <button type="button" class="btn btn-sm btn-danger delete-admin-btn" 
+                                                data-admin-id="{{ admin.id }}" 
+                                                data-admin-name="{{ admin.username }}">
+                                            <i class="bi bi-trash"></i> O'chirish
+                                        </button>
+                                    {% else %}
+                                        <span class="text-muted">Joriy foydalanuvchi</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">Adminlar ro'yxati bo'sh.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
